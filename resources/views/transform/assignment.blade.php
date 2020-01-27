@@ -7,21 +7,23 @@
             <div class="card">
                 <div class="card-header">Transformation Step #3</div>
                 <div class="card-body">
-                    <form method="POST" action="/transform/assignment">
+
+                    {{ $html }}
+
+                    <form method="POST" action="/transform/upload">
 
                         @csrf
                         @method('post')
 
-                        <!-- Issuer title -->
-                        <label for="xml" class="col-md-4 col-form-label">XML</label>
-                        <div class="col-md-4">
-                            <textarea cols="50" rows="10" name="xml"></textarea>
+                        <div class="row">
+{{-- @include('transform.assign_form', ['array' => $xmlAsArray]) --}}
                         </div>
 
+                        <!-- Issuer title -->
+                        {{-- <label for="issuer_title" class="col-md-4 col-form-label">Issuer title</label>
+                        <input id="issuer_title" type="text" class="form-control @error('issuer_title') is-invalid @enderror" name="issuer_title" placeholder="Issuer title" value="{{ $user->issuer_title }}" required autofocus>
+ --}}
                         <div class="row">
-                            <div class="col">
-                                <input type="button" class="btn btn-danger mt-3" value="Back" onclick="location.href='/transform/start';">
-                            </div>
                             <div class="col text-right">
                                 <input type="submit" class="btn btn-primary mt-3" value="Next">
                             </div>

@@ -22,4 +22,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware(['auth'])->group(function () {
     Route::get('/transform', 'TransformController@transformStart');
     Route::post('/transform/upload', 'TransformController@transformUpload');
+    Route::post('/transform/assignment', 'TransformController@transformAssignment');
 });
