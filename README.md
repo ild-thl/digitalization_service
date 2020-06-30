@@ -1,78 +1,51 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Digitalisierungsservice
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## Getting started 
 
-## About Laravel
+1. First you have to install the vendor components via composer.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+    ``` composer install ```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+2. Create your .env file in the root directory. Use .env.example file for all settings
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+3. Create database schema
 
-## Learning Laravel
+    ``` php artisan migrate ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+4. Seed database
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    ``` php artisan db:seed ```
 
-## Laravel Sponsors
+    This will create an admin user with username admin and the password secret. You can also register yourself with your own user account (requires mail setup properly) by setting `DIGISERV_REGISTER=true` in your .env file. This step will also create the default ELMO keys for you. If you don't want the default admin user to be created, you can only run the generation of ELMO keys by executing the command `php artisan db:seed --class=ElmoKeysTableSeeder`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+5. Create app keys
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
+    ``` php artisan key:generate ```
 
-## Contributing
+6. Link storage directories
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    ``` php artisan storage:link ```
 
-## Code of Conduct
+7. Create your own X509 Certificate if you don't have one yet.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    * Install `openssl` and add path\to\openssl-folder\bin folder to your system path
+    * `openssl req -x509 -days 365 -newkey rsa:2048 -keyout my-key.pem -out my-cert.pem` **Remember the password you set here**
+    * `openssl pkcs12 -export -in .\my-cert.pem -inkey .\my-key.pem -out xml-cert.pfx`
+    * `openssl pkcs12 -in .\xml-cert.pfx -clcerts -nokeys -out xml-cert-public.pem`
+    * Place `xml-cert.pfx` and `xml-cert-public.pem` in the `storage/app/certs/`-Directory and add the correct paths (e.g. `/storage/app/certs/xml-cert.pfx`) and the password used in the generation process to the .env file.
 
-## Security Vulnerabilities
+8. Optional: add the cron `* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1` to your server to enable auto-removing of remained files (runs daily at midnight and deletes all temporary XML and ZIP files that remained because of an error or not being downloaded).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+9. Point your url to the public directory or navigate to it. Installed successfully!
 
-## License
+## Adding new ELMO key
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. Activate edit mode by setting `DIGISERV_EDIT=true` in your .env file.
+
+2. Creating a new ELMO key in the frontend.
+
+3. Dig into the source code: File `app\Http\Controllers\TransformController.php` and go to the `createModuleXml` function. Here you can select the appropriate location to add your new XML tag according to the scheme.
+
+4. The function `getContentByElmoKey("New_created_ELMO_key", $transformArray, $moduleXml or $courseXml)` will return the content to place inside your XML tag. If multiple tags in the source file were found, the function will glue them together with a white space. Don't forget to check for empty strings (use the `trim` function) on the returned content before adding the tag to the SimpleXmlElement. According to your scheme you might want to leave that tag with an empty string or omitt it completely.
+
+5. You might want to disable the edit mode again by setting `DIGISERV_EDIT=false` in your .env file.

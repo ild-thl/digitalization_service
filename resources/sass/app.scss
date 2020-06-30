@@ -6,3 +6,43 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+
+.userfeedback-loading i.fa-spinner {
+  animation: userfeedback-loading 1.5s infinite linear;
+}
+
+@keyframes userfeedback-loading{
+  from{  transform: rotate(0deg)   }
+  to  {  transform: rotate(360deg) }
+}
+
+[data-toggle="collapse"] .fas {  
+  transform: rotate(90deg);
+  transition: 0.3s linear;
+}
+
+[data-toggle="collapse"].collapsed .fas {
+  transform: rotate(0deg);
+  transition: 0.3s linear;
+}
+
+#accordion button.btn {
+  font-size: unset;
+}
+
+.tab-content .tab-pane {
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.form-control.is-invalid {
+  background-position: right calc(0.4em + 0.7rem) center;
+}

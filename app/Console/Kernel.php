@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Storage;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,8 +25,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function () {
+            $allfilesTmp = Storage::disk('local')->allFiles("tmp/");
+            Storage::disk('local')->delete($allfilesTmp);
+
+            $allfilesPublic = Storage::disk('local')->allFiles("public/elmo/zip/");
+            Storage::disk('local')->delete($allfilesPublic);
+        })->dailyAt('03:33');
+
     }
 
     /**

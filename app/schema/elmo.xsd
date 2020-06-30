@@ -1,0 +1,9 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="https://github.com/emrex-eu/elmo-schemas/tree/v1">
+	<xs:import
+		namespace="https://github.com/emrex-eu/elmo-schemas/tree/v1"
+		schemaLocation="schema.xsd" />
+	<xs:import
+		namespace="https://github.com/ilydlci/elmo-schemas"
+		schemaLocation="elmoRecog.xsd" />
+</xs:schema>
